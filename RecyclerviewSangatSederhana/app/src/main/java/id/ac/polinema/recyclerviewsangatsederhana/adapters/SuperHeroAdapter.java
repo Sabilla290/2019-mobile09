@@ -4,11 +4,15 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.squareup.picasso.Picasso;
+
+import java.util.List;
 
 import id.ac.polinema.recyclerviewsangatsederhana.R;
 import id.ac.polinema.recyclerviewsangatsederhana.models.SuperHero;
@@ -27,7 +31,7 @@ public class SuperHeroAdapter extends RecyclerView.Adapter<SuperHeroAdapter.MyVi
         Context context = parent.getContext();
         //object context digunakan untuk membuat object layoutInflater
         LayoutInflater layoutInflater = LayoutInflater.from(context);
-        //object layoutInflater digunakan untuk membuat object view yang merupakan hasil inflate  layout ( mengubungkan adapter degnan layout)
+        //object layoutInflater digunakan untuk membuat object view yang merupakan hasil inflate  layout ( mengubungkan adapter dengan layout)
         View superHeroView = layoutInflater.inflate(R.layout.item_super_hero,parent,false);
         //object superHeroView digunakan untuk membuat object viewHolder
         MyViewHolder viewHolder = new MyViewHolder(superHeroView);
@@ -38,8 +42,15 @@ public class SuperHeroAdapter extends RecyclerView.Adapter<SuperHeroAdapter.MyVi
     public void onBindViewHolder(@NonNull SuperHeroAdapter.MyViewHolder holder, int position) {
         //ambil satu item hero
         SuperHero hero = heroList.get(position);
+
         //set text heroName berdasarkan data dari model hero
         holder.heroName.setText(hero.getHeroName());
+        Picasso.get()
+                .load(hero.getImgUrl())
+                .placeholder(R.drawable.ic_launcher_background)
+                .error(R.drawable.ic_launcher_foreground)
+                .fit()
+                .into(holder.heroImg);
     }
 
     @Override
@@ -49,13 +60,13 @@ public class SuperHeroAdapter extends RecyclerView.Adapter<SuperHeroAdapter.MyVi
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView heroName;
+        public ImageView heroImg;
+
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            //variabel disesuaikan dengan layout, karena pada layout item_super_hero terdapat satu
-            //TextView maka pada kode program ini dibuat satu TextView yang melakukan findViewById ke id layout yang bersesuaian
             heroName = itemView.findViewById(R.id.heroName);
+            heroImg = itemView.findViewById(R.id.heroImg);
         }
     }
-
 
 }
